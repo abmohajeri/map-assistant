@@ -9,3 +9,8 @@ Map Assistant is an online tool to assist with map-related tasks like geometry d
 - **Interactive UI**: Engage with the map using an intuitive and user-friendly design.
 - **Geometry Drawing**: Easily draw different geometries, including Points, LineStrings, and Polygons, on the map.
 - **Coordinate Transformation**: Effortlessly convert coordinates between various projections (e.g., EPSG:4326 to EPSG:3857 and vice versa) for accurate spatial analysis.
+
+## Access the Project
+
+You can access the live version of the project here:  
+[https://abmohajeri.github.io/map-assistant](https://abmohajeri.github.io/map-assistant)
