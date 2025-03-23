@@ -123,11 +123,11 @@
                             <div class="mt-4 mb-6">
                                 <h3 class="block text-lg text-[#1C274C] font-bold mb-2"> Valid Input Examples: </h3>
                                 <p class="mb-3">
-                                    <strong class="text-[#1C274C]"> EPSG-3857(X, Y): </strong>
+                                    <strong class="text-[#1C274C]"> EPSG:3857(X, Y): </strong>
                                     <code class="bg-gray-200 px-2 py-1 rounded"> 5714927.050508631, 4259384.060127694 </code>
                                 </p>
                                 <p>
-                                    <strong class="text-[#1C274C]"> EPSG-4326(lng, lat): </strong>
+                                    <strong class="text-[#1C274C]"> EPSG:4326(lng, lat): </strong>
                                     <code class="bg-gray-200 px-2 py-1 rounded"> 51.338063171, 35.699738067 </code>
                                 </p>
                             </div>
@@ -206,7 +206,7 @@
                     let coords = geometry.getCoordinates();
                     coords = transformCoordinates(coords, drawType, selectedProjection);
                     console.log(coords)
-                    output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection}):</h3>
+                    output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
                     <pre>${JSON.stringify(coords, null, 2).replaceAll(/(\d),\n\s*(\d)/g, '$1, $2')}</pre>`);
                 });
             }
@@ -252,7 +252,7 @@
                         const x = parseFloat(match[1]);
                         const y = parseFloat(match[2]);
                         result = proj4(proj3857, proj4326, [x, y]);
-                        output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG-4326:</h3><b>Longitude:</b> ${result[0]}<br><b>Latitude:</b> ${result[1]}`);
+                        output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG:4326</h3><b>Longitude:</b> ${result[0]}<br><b>Latitude:</b> ${result[1]}`);
                         outputSection.show();
                         return;
                     }
@@ -263,7 +263,7 @@
                         const lng = parseFloat(match[1]);
                         const lat = parseFloat(match[2]);
                         result = proj4(proj4326, proj3857, [lng, lat]);
-                        output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG-3857:</h3><b>X:</b> ${result[0]}<br><b>Y:</b> ${result[1]}`);
+                        output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG:3857</h3><b>X:</b> ${result[0]}<br><b>Y:</b> ${result[1]}`);
                         outputSection.show();
                         return;
                     }
