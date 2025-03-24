@@ -29,6 +29,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 Contributions are welcome! Feel free to fork the repo, submit issues, or create pull requests.
 
----
+## Support
 
-📌 **Support:** If you like this project, give it a ⭐ on GitHub!
+If you like this project, give it a ⭐ on GitHub!
