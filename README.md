@@ -1,4 +1,6 @@
-![Screenshot](images/screenshot.png)
+<p align="center">
+  <img src="images/screenshot.png" alt="Screenshot" />
+</p>
 
 # Map Tools
 
