@@ -2,15 +2,33 @@
 
 # Map Tools
 
-Map Tools is an online tool to assist with map-related tasks like geometry drawing and coordinate converter. It supports multiple projections and provides an interactive experience for users to visualize and manipulate geographical data.
+**Map Tools** is an online assistant for working with maps, providing utilities such as geometry extraction, coordinate conversion, and WKT (Well-Known Text) visualization. This tool is ideal for GIS professionals, developers, and anyone working with spatial data.
 
 ## Features
 
-- **Interactive UI**: Engage with the map using an intuitive and user-friendly design.
-- **Geometry Drawing**: Easily draw different geometries, including Points, LineStrings, and Polygons, on the map.
-- **Coordinate Transformation**: Effortlessly convert coordinates between various projections (e.g., EPSG:4326 to EPSG:3857 and vice versa) for accurate spatial analysis.
+- **Geometry Extractor**: Draw and extract geometric data (Points, LineStrings, Polygons).
+- **Coordinate Converter**: Convert coordinates between different projections (EPSG:3857, EPSG:4326).
+- **WKT Viewer**: Visualize WKT representations of geometries on a map.
 
-## Access the Project
+## Live Demo
 
-You can access the live version of the project here:  
-[https://abmohajeri.github.io/map-assistant](https://abmohajeri.github.io/map-assistant)
+🔗 [Try it Online](https://abmohajeri.github.io/map-tools)
+
+
+## Author
+
+👤 **Abolfazl Mohajeri**\
+🌐 [Website](https://abolfazlmohajeri.ir)\
+🐙 [GitHub](https://github.com/abmohajeri)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Contributing
+
+Contributions are welcome! Feel free to fork the repo, submit issues, or create pull requests.
+
+---
+
+📌 **Support:** If you like this project, give it a ⭐ on GitHub!
