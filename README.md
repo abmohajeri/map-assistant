@@ -1,6 +1,6 @@
-# Map Assistant
+# Map Tools
 
-Map Assistant is an online tool to assist with map-related tasks like geometry drawing and coordinate converter. It supports multiple projections and provides an interactive experience for users to visualize and manipulate geographical data.
+Map Tools is an online tool to assist with map-related tasks like geometry drawing and coordinate converter. It supports multiple projections and provides an interactive experience for users to visualize and manipulate geographical data.
 
 ![Screenshot](images/screenshot.png)
 
