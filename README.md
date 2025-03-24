@@ -14,17 +14,6 @@
 
 🔗 [Try it Online](https://abmohajeri.github.io/map-tools)
 
-
-## Author
-
-👤 **Abolfazl Mohajeri**\
-🌐 [Website](https://abolfazlmohajeri.ir)\
-🐙 [GitHub](https://github.com/abmohajeri)
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
 ## Contributing
 
 Contributions are welcome! Feel free to fork the repo, submit issues, or create pull requests.
