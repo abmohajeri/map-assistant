@@ -34,7 +34,6 @@
                 <div id="input-error"
                      class="bg-red-100 border-l-4 border-red-500 text-red-700 shadow-md rounded-lg p-4 mb-4"
                      style="display: none;">
-                    <span class="font-semibold"> Error: </span> Please enter valid coordinates!
                 </div>
             </div>
         </div>
@@ -56,10 +55,9 @@
                     </div>
                     <div class="mt-4 tab-content-container">
                         <div id="map-tab" class="tab-content text-stone-500 text-sm block px-1">
-                            <div class="w-full bg-white shadow-md rounded-lg">
-                                <div id="map-container" class="h-100 w-full border rounded"></div>
-                                <button id="clear-map"
-                                        class="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
+                            <div class="w-full bg-white shadow-md rounded-lg relative">
+                                <div id="extractor-map" class="h-100 w-full border rounded"></div>
+                                <button class="clear-map rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
                                         type="button">
                                     Clear
                                 </button>
@@ -106,14 +104,20 @@
                             </div>
                         </div>
                         <div id="converter-tab" class="tab-content text-stone-500 text-sm hidden px-1">
-                            <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-5">
+                                <div class="flex-3">
+                                    <label class="block text-lg text-[#1C274C] font-bold mb-1" for="input-coordinates"> Enter Coordinates </label>
+                                    <input type="text" id="input-coordinates"
+                                           class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none"
+                                           placeholder="3857 X, Y or 4326 Longitude, Latitude">
+                                </div>
                                 <div class="flex-2">
                                     <div class="relative">
                                         <label class="block text-lg text-[#1C274C] font-bold mb-1" for="projection-selector"> Select Input Projection </label>
                                         <select id="projection-selector"
                                                 class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
-                                            <option value="EPSG:3857" selected>EPSG:3857 (Web Mercator)</option>
-                                            <option value="EPSG:4326">EPSG:4326 (WGS 84)</option>
+                                            <option value="EPSG:3857" selected> EPSG:3857 (Web Mercator) </option>
+                                            <option value="EPSG:4326"> EPSG:4326 (WGS 84) </option>
                                         </select>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
                                              stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
@@ -121,12 +125,6 @@
                                                   d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
                                         </svg>
                                     </div>
-                                </div>
-                                <div class="flex-3">
-                                    <label class="block text-lg text-[#1C274C] font-bold mb-1" for="input-coordinates"> Enter Coordinates </label>
-                                    <input type="text" id="input-coordinates"
-                                           class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none"
-                                           placeholder="3857 X, Y or 4326 Longitude, Latitude">
                                 </div>
                             </div>
                             <div class="mt-4 mb-6">
@@ -149,7 +147,41 @@
                             </div>
                         </div>
                         <div id="wkt-tab" class="tab-content text-stone-500 text-sm block px-1">
-
+                            <div class="w-full bg-white shadow-md rounded-lg relative">
+                                <div id="viewer-map" class="h-100 w-full border rounded"></div>
+                                <button class="clear-map rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
+                                        type="button">
+                                    Clear
+                                </button>
+                            </div>
+                            <div class="flex space-x-6 mt-3">
+                                <div class="flex-4">
+                                    <label class="block text-lg text-[#1C274C] font-bold mb-1" for="input-wkt"> Enter Coordinates </label>
+                                    <textarea id="input-wkt"
+                                           class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none"
+                                           placeholder="Enter WKT" rows="4"></textarea>
+                                </div>
+                                <div class="flex-2">
+                                    <div class="relative">
+                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="viewer-projection-selector"> Select Input Projection </label>
+                                        <select id="viewer-projection-selector"
+                                                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                                            <option value="EPSG:3857" selected> EPSG:3857 (Web Mercator) </option>
+                                            <option value="EPSG:4326"> EPSG:4326 (WGS 84) </option>
+                                        </select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                                             stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
+                                        </svg>
+                                    </div>
+                                    <button id="show-viewer-map"
+                                            class="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer mt-2"
+                                            type="button">
+                                        Show
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,19 +194,31 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-            const inputError = $('#input-error');
-            const outputSection = $('#output-section');
-            const output = $('#output');
-            const source = new ol.source.Vector();
-            $('.tab-link').on('click', function () {
-                inputError.hide();
-                outputSection.hide();
-                source.clear();
-            });
+        const inputError = $('#input-error');
+        const outputSection = $('#output-section');
+        const output = $('#output');
+        const extractorSource = new ol.source.Vector();
+        const viewerSource = new ol.source.Vector();
+        $('.tab-link').on('click', function () {
+            inputError.hide();
+            outputSection.hide();
+            extractorSource.clear();
+            viewerSource.clear();
+        });
+        $('.clear-map').click(function () {
+            extractorSource.clear();
+            viewerSource.clear();
+            outputSection.hide();
+        });
 
+        $(document).ready(function () {
+            initExtractorMap();
+            initViewerMap();
+        });
+
+        function initExtractorMap () {
             const map = new ol.Map({
-                target: 'map-container',
+                target: 'extractor-map',
                 layers: [
                     new ol.layer.Tile({
                         source: new ol.source.OSM()
@@ -186,7 +230,7 @@
                 })
             });
             const vectorLayer = new ol.layer.Vector({
-                source: source,
+                source: extractorSource,
                 style: new ol.style.Style({
                     fill: new ol.style.Fill({ color: 'rgba(71,65,65,0.2)' }),
                     stroke: new ol.style.Stroke({ color: '#1C274C', width: 2 }),
@@ -205,12 +249,12 @@
             const drawTypeSelector = document.getElementById("draw-type-selector");
             function addDrawInteraction(drawType) {
                 draw = new ol.interaction.Draw({
-                    source: source,
+                    source: extractorSource,
                     type: drawType
                 });
                 map.addInteraction(draw);
                 draw.on('drawend', function (event) {
-                    source.clear();
+                    extractorSource.clear();
                     outputSection.show();
                     const feature = event.feature;
                     const selectedProjection = projectionSelector.value;
@@ -251,49 +295,101 @@
                 }
                 addDrawInteraction(drawTypeSelector.value);
             });
-            $('#clear-map').click(function () {
-                source.clear();
-                output.hide();
-            });
+        }
 
-            $('#convert-button').click(function () {
-                const inputCoordinates = $('#input-coordinates').val().trim();
-                if (inputCoordinates === '') {
+        function initViewerMap () {
+            const map = new ol.Map({
+                target: 'viewer-map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([53.584972499936065, 32.24674047057724]),
+                    zoom: 4.8
+                })
+            });
+            const vectorLayer = new ol.layer.Vector({
+                source: viewerSource,
+                style: new ol.style.Style({
+                    fill: new ol.style.Fill({ color: 'rgba(71,65,65,0.2)' }),
+                    stroke: new ol.style.Stroke({ color: '#1C274C', width: 2 }),
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({ color: '#1C274C' })
+                    })
+                })
+            });
+            map.addLayer(vectorLayer);
+            const wktFormat = new ol.format.WKT();
+            $('#show-viewer-map').click(function () {
+                inputError.hide();
+                let wkt = $('#input-wkt').val();
+                try {
+                    const feature = wktFormat.readFeature(wkt, {
+                        dataProjection: $('#viewer-projection-selector').val(),
+                        featureProjection: map.getView().getProjection()
+                    });
+
+                    viewerSource.clear();
+                    viewerSource.addFeature(feature);
+
+                    map.getView().fit(feature.getGeometry(), {
+                        padding: [50, 50, 50, 50]
+                    });
+                } catch (e) {
                     inputError.show();
+                    inputError.html(`
+                        <span class="font-semibold"> Error: </span> Please enter valid WKT!
+                    `);
+                }
+            });
+        }
+
+        $('#convert-button').click(function () {
+            const inputCoordinates = $('#input-coordinates').val().trim();
+            if (inputCoordinates === '') {
+                inputError.show();
+                inputError.html(`
+                    <span class="font-semibold"> Error: </span> Please enter valid coordinates!
+                `);
+                return;
+            }
+            inputError.hide();
+
+            let result;
+            const proj3857 = 'EPSG:3857';
+            const proj4326 = 'EPSG:4326';
+            const selectedProjection = $('#projection-selector').val();
+            if (selectedProjection === proj3857) {
+                const regex = /^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/;
+                const match = inputCoordinates.match(regex);
+                if (match) {
+                    const x = parseFloat(match[1]);
+                    const y = parseFloat(match[2]);
+                    result = proj4(proj3857, proj4326, [x, y]);
+                    output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG:4326</h3><b>Longitude:</b> ${result[0]}<br><b>Latitude:</b> ${result[1]}`);
+                    outputSection.show();
                     return;
                 }
-                inputError.hide();
-
-                let result;
-                const proj3857 = 'EPSG:3857';
-                const proj4326 = 'EPSG:4326';
-                const selectedProjection = $('#projection-selector').val();
-                if (selectedProjection === proj3857) {
-                    const regex = /^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/;
-                    const match = inputCoordinates.match(regex);
-                    if (match) {
-                        const x = parseFloat(match[1]);
-                        const y = parseFloat(match[2]);
-                        result = proj4(proj3857, proj4326, [x, y]);
-                        output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG:4326</h3><b>Longitude:</b> ${result[0]}<br><b>Latitude:</b> ${result[1]}`);
-                        outputSection.show();
-                        return;
-                    }
-                } else if (selectedProjection === proj4326) {
-                    const regex = /^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/;
-                    const match = inputCoordinates.match(regex);
-                    if (match) {
-                        const lng = parseFloat(match[1]);
-                        const lat = parseFloat(match[2]);
-                        result = proj4(proj4326, proj3857, [lng, lat]);
-                        output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG:3857</h3><b>X:</b> ${result[0]}<br><b>Y:</b> ${result[1]}`);
-                        outputSection.show();
-                        return;
-                    }
+            } else if (selectedProjection === proj4326) {
+                const regex = /^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/;
+                const match = inputCoordinates.match(regex);
+                if (match) {
+                    const lng = parseFloat(match[1]);
+                    const lat = parseFloat(match[2]);
+                    result = proj4(proj4326, proj3857, [lng, lat]);
+                    output.html(`<h3 class="text-xl text-[#1C274C] font-bold mb-1">Converted to EPSG:3857</h3><b>X:</b> ${result[0]}<br><b>Y:</b> ${result[1]}`);
+                    outputSection.show();
+                    return;
                 }
-                inputError.show();
-                outputSection.hide();
-            });
+            }
+            inputError.show();
+            inputError.html(`
+                <span class="font-semibold"> Error: </span> Please enter valid coordinates!
+            `);
+            outputSection.hide();
         });
     </script>
 </body>

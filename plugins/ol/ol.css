@@ -354,9 +354,9 @@
   cursor: pointer;
 }
 
-#clear-map {
+.clear-map {
   position: absolute;
-  bottom: 92px;
-  right: 15px;
+  bottom: 8px;
+  right: 8px;
   z-index: 1000;
 }
