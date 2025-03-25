@@ -4,7 +4,7 @@
 
 # Map Tools
 
-**Map-Tools** is an online map assistant that provides utilities such as geometry extraction, coordinate conversion, and WKT (Well-Known Text) visualization. Whether you're a GIS professional, developer, or anyone working with spatial data, this tool makes mapping tasks easier and more efficient.
+**Map-Tools** is an online map assistant that provides utilities such as geometry extraction, coordinate conversion, and WKT (Well-Known Text) visualization. Whether you're a GIS professional, developer, or anyone working with spatial data, this tool makes these tasks easier and more efficient.
 
 ## Features
 
