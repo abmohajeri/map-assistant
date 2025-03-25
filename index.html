@@ -226,7 +226,8 @@
                 ],
                 view: new ol.View({
                     center: ol.proj.fromLonLat([53.584972499936065, 32.24674047057724]),
-                    zoom: 4.8
+                    zoom: 4.8,
+                    extent: ol.proj.get('EPSG:3857').getExtent()
                 })
             });
             const vectorLayer = new ol.layer.Vector({
