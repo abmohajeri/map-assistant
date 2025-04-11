@@ -35,7 +35,7 @@
                     <div class="mt-4 tab-content-container">
                         <div id="map-tab" class="tab-content text-stone-500 text-sm block px-1">
                             <div class="w-full bg-white shadow-md rounded-lg relative">
-                                <div id="extractor-map" class="h-130 w-full border rounded"></div>
+                                <div id="extractor-map" class="h-150 w-full border rounded"></div>
                                 <button class="clear-map rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
                                         type="button">
                                     Clear
@@ -127,7 +127,7 @@
                         </div>
                         <div id="wkt-tab" class="tab-content text-stone-500 text-sm block px-1">
                             <div class="w-full bg-white shadow-md rounded-lg relative">
-                                <div id="viewer-map" class="h-130 w-full border rounded"></div>
+                                <div id="viewer-map" class="h-150 w-full border rounded"></div>
                                 <button class="clear-map rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
                                         type="button">
                                     Clear
@@ -247,8 +247,56 @@
             let draw = 'Point';
             addDrawInteraction(draw);
             const wktFormat = new ol.format.WKT();
-            const projectionSelector = document.getElementById("map-projection");
             const drawTypeSelector = document.getElementById("draw-type-selector");
+            const projectionSelector = document.getElementById("map-projection");
+            const exportTypeSelector = document.getElementById("export-type");
+
+            drawTypeSelector.addEventListener("change", function () {
+                if (draw) {
+                    map.removeInteraction(draw);
+                }
+                addDrawInteraction(drawTypeSelector.value);
+            });
+            projectionSelector.addEventListener("change", () => {
+                if (lastDrawnFeature) {
+                    updateOutput(drawTypeSelector.value, lastDrawnFeature);
+                }
+            });
+            exportTypeSelector.addEventListener("change", () => {
+                if (lastDrawnFeature) {
+                    updateOutput(drawTypeSelector.value, lastDrawnFeature);
+                }
+            });
+
+            let lastDrawnFeature = null;
+            function handleDrawEnd(event, drawType) {
+                extractorSource.clear();
+                outputSection.show();
+                lastDrawnFeature = event.feature;
+                updateOutput(drawType, lastDrawnFeature);
+            }
+
+            function updateOutput(drawType, feature) {
+                const selectedProjection = projectionSelector.value;
+                const exportType = exportTypeSelector.value;
+                let coords = feature.getGeometry().getCoordinates();
+                coords = transformCoordinates(coords, drawType, selectedProjection);
+                if (exportType === 'array') {
+                    output.html(`
+                        <h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
+                        <pre>${JSON.stringify(coords, null, 2).replaceAll(/(\d),\n\s*(\d)/g, '$1, $2')}</pre>
+                    `);
+                } else if (exportType === 'wkt') {
+                    let newFeature = feature.clone();
+                    newFeature.getGeometry().setCoordinates(coords);
+                    const wkt = wktFormat.writeFeature(newFeature);
+                    output.html(`
+                        <h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
+                        <pre>${wkt.replaceAll(',', ',\n')}</pre>
+                    `);
+                }
+            }
+
             function addDrawInteraction(drawType) {
                 draw = new ol.interaction.Draw({
                     source: extractorSource,
@@ -256,29 +304,10 @@
                 });
                 map.addInteraction(draw);
                 draw.on('drawend', function (event) {
-                    extractorSource.clear();
-                    outputSection.show();
-                    const feature = event.feature;
-                    const selectedProjection = projectionSelector.value;
-                    let coords = feature.getGeometry().getCoordinates();
-                    coords = transformCoordinates(coords, drawType, selectedProjection);
-                    const exportType = document.getElementById("export-type").value;
-                    if (exportType === 'array') {
-                        output.html(`
-                            <h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
-                            <pre>${JSON.stringify(coords, null, 2).replaceAll(/(\d),\n\s*(\d)/g, '$1, $2')}</pre>
-                        `);
-                    } else if (exportType === 'wkt') {
-                        let newFeature = feature.clone();
-                        newFeature.getGeometry().setCoordinates(coords);
-                        const wkt = wktFormat.writeFeature(newFeature);
-                        output.html(`
-                            <h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
-                            <pre>${wkt.replaceAll(',', ',\n')}</pre>
-                        `);
-                    }
+                    handleDrawEnd(event, drawType);
                 });
             }
+
             function transformCoordinates(coords, geometryType, targetProjection) {
                 if (geometryType === "Point") {
                     return ol.proj.transform(coords, "EPSG:3857", targetProjection);
@@ -291,12 +320,6 @@
                 }
                 return coords;
             }
-            drawTypeSelector.addEventListener("change", function () {
-                if (draw) {
-                    map.removeInteraction(draw);
-                }
-                addDrawInteraction(drawTypeSelector.value);
-            });
         }
 
         function initViewerMap () {
