@@ -25,11 +25,11 @@
                         <button class="tab-link font-semibold text-sm active inline-block py-2 px-4 text-stone-800 transition-all duration-300 relative z-1 mr-1 cursor-pointer" data-dui-tab-target="map-tab">
                             Geometry Extractor
                         </button>
+                        <button class="tab-link font-semibold text-sm inline-block py-2 px-4 text-stone-800 transition-all duration-300 relative z-1 mr-1 cursor-pointer" data-dui-tab-target="geometry-tab">
+                            Geometry Viewer
+                        </button>
                         <button class="tab-link font-semibold text-sm inline-block py-2 px-4 text-stone-800 transition-all duration-300 relative z-1 mr-1 cursor-pointer" data-dui-tab-target="converter-tab">
                             Coordinate Converter
-                        </button>
-                        <button class="tab-link font-semibold text-sm inline-block py-2 px-4 text-stone-800 transition-all duration-300 relative z-1 mr-1 cursor-pointer" data-dui-tab-target="wkt-tab">
-                            WKT Viewer
                         </button>
                     </div>
                     <div class="mt-4 tab-content-container">
@@ -50,6 +50,19 @@
                                             <option value="Point" selected> Point </option>
                                             <option value="LineString"> LineString </option>
                                             <option value="Polygon"> Polygon </option>
+                                            <option value="BBox"> BBox </option>
+                                        </select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="relative">
+                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="export-type"> Output Type </label>
+                                        <select id="export-type" class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                                            <option value="array" selected> Array </option>
+                                            <option value="wkt"> WKT </option>
                                         </select>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
@@ -68,17 +81,57 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <div class="flex-1">
+                            </div>
+                        </div>
+                        <div id="geometry-tab" class="tab-content text-stone-500 text-sm block px-1">
+                            <div class="w-full bg-white shadow-md rounded-lg relative">
+                                <div id="viewer-map" class="h-150 w-full border rounded"></div>
+                                <button class="clear-map rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
+                                        type="button">
+                                    Clear
+                                </button>
+                            </div>
+                            <div class="flex space-x-6 mt-3">
+                                <div class="flex-4">
+                                    <label class="block text-lg text-[#1C274C] font-bold mb-1" for="input-geometry"> Enter Geometry </label>
+                                    <textarea id="input-geometry"
+                                              class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none"
+                                              placeholder="Enter Geometry" rows="5"></textarea>
+                                </div>
+                                <div class="flex-2">
                                     <div class="relative">
-                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="export-type"> Export Type </label>
-                                        <select id="export-type" class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
-                                            <option value="array" selected> Array </option>
+                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="viewer-type-selector"> Input Type </label>
+                                        <select id="viewer-type-selector"
+                                                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                                            <option value="array"> Array </option>
                                             <option value="wkt"> WKT </option>
                                         </select>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                                             stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
                                         </svg>
                                     </div>
+                                    <div class="relative mt-2">
+                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="viewer-projection-selector"> Input Projection </label>
+                                        <select id="viewer-projection-selector"
+                                                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                                            <option value="EPSG:3857" selected> EPSG:3857 (Web Mercator) </option>
+                                            <option value="EPSG:4326"> EPSG:4326 (WGS 84) </option>
+                                        </select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                                             stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <button id="show-viewer-map"
+                                            class="rounded-md w-full h-full -translate-y-2 bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer mt-2"
+                                            type="button">
+                                        Show
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +145,7 @@
                                 </div>
                                 <div class="flex-2">
                                     <div class="relative">
-                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="projection-selector"> Select Input Projection </label>
+                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="projection-selector"> Input Projection </label>
                                         <select id="projection-selector"
                                                 class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
                                             <option value="EPSG:3857" selected> EPSG:3857 (Web Mercator) </option>
@@ -125,43 +178,6 @@
                                 </button>
                             </div>
                         </div>
-                        <div id="wkt-tab" class="tab-content text-stone-500 text-sm block px-1">
-                            <div class="w-full bg-white shadow-md rounded-lg relative">
-                                <div id="viewer-map" class="h-150 w-full border rounded"></div>
-                                <button class="clear-map rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer"
-                                        type="button">
-                                    Clear
-                                </button>
-                            </div>
-                            <div class="flex space-x-6 mt-3">
-                                <div class="flex-4">
-                                    <label class="block text-lg text-[#1C274C] font-bold mb-1" for="input-wkt"> Enter Coordinates </label>
-                                    <textarea id="input-wkt"
-                                           class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none"
-                                           placeholder="Enter WKT" rows="4"></textarea>
-                                </div>
-                                <div class="flex-2">
-                                    <div class="relative">
-                                        <label class="block text-lg text-[#1C274C] font-bold mb-1" for="viewer-projection-selector"> Select Input Projection </label>
-                                        <select id="viewer-projection-selector"
-                                                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
-                                            <option value="EPSG:3857" selected> EPSG:3857 (Web Mercator) </option>
-                                            <option value="EPSG:4326"> EPSG:4326 (WGS 84) </option>
-                                        </select>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
-                                             stroke="currentColor" class="h-5 w-5 ml-1 absolute top-10.5 right-2.5 text-slate-700">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/>
-                                        </svg>
-                                    </div>
-                                    <button id="show-viewer-map"
-                                            class="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none cursor-pointer mt-2"
-                                            type="button">
-                                        Show
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -187,7 +203,7 @@
         </div>
 
         <div class="flex justify-center mb-4" id="output-section" style="display: none;">
-            <div id="output" class="w-full max-w-8xl bg-white p-6 shadow-md rounded-lg"></div>
+            <div id="output" class="w-full max-w-8xl bg-white p-3 shadow-md rounded-lg"></div>
         </div>
     </div>
 
@@ -211,6 +227,14 @@
             viewerSource.clear();
             outputSection.hide();
         });
+
+        function copyToClipboard(button) {
+            const code = button.nextElementSibling.innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.innerText = 'Copied!';
+                setTimeout(() => button.innerText = 'Copy', 1500);
+            });
+        }
 
         $(document).ready(function () {
             initExtractorMap();
@@ -269,11 +293,33 @@
             });
 
             let lastDrawnFeature = null;
-            function handleDrawEnd(event, drawType) {
-                extractorSource.clear();
-                outputSection.show();
-                lastDrawnFeature = event.feature;
-                updateOutput(drawType, lastDrawnFeature);
+            function addDrawInteraction(drawType) {
+                draw = new ol.interaction.Draw({
+                    source: extractorSource,
+                    type: drawType === 'BBox' ? 'Polygon' : drawType
+                });
+                map.addInteraction(draw);
+                draw.on('drawend', function (event) {
+                    extractorSource.clear();
+                    outputSection.show();
+                    lastDrawnFeature = event.feature;
+                    if (drawType === 'BBox') {
+                        const extent = lastDrawnFeature.getGeometry().getExtent();
+                        lastDrawnFeature = new ol.Feature(ol.geom.Polygon.fromExtent(extent));
+                        lastDrawnFeature.setStyle(new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 2,
+                                lineDash: [6, 4]
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0.1)'
+                            })
+                        }));
+                        extractorSource.addFeature(lastDrawnFeature);
+                    }
+                    updateOutput(drawType, lastDrawnFeature);
+                });
             }
 
             function updateOutput(drawType, feature) {
@@ -281,31 +327,27 @@
                 const exportType = exportTypeSelector.value;
                 let coords = feature.getGeometry().getCoordinates();
                 coords = transformCoordinates(coords, drawType, selectedProjection);
+
+                let content = '';
                 if (exportType === 'array') {
-                    output.html(`
-                        <h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
-                        <pre>${JSON.stringify(coords, null, 2).replaceAll(/(\d),\n\s*(\d)/g, '$1, $2')}</pre>
-                    `);
+                    const coordString = JSON.stringify(coords, null, 2).replaceAll(/(\d),\n\s*(\d)/g, '$1, $2');
+                    content = `<code class="language-json">${coordString}</code>`;
                 } else if (exportType === 'wkt') {
                     let newFeature = feature.clone();
                     newFeature.getGeometry().setCoordinates(coords);
-                    const wkt = wktFormat.writeFeature(newFeature);
-                    output.html(`
-                        <h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
-                        <pre>${wkt.replaceAll(',', ',\n')}</pre>
-                    `);
+                    const wkt = wktFormat.writeFeature(newFeature).replaceAll(',', ',\n');
+                    content = `<code class="language-wkt">${wkt}</code>`;
                 }
-            }
 
-            function addDrawInteraction(drawType) {
-                draw = new ol.interaction.Draw({
-                    source: extractorSource,
-                    type: drawType
-                });
-                map.addInteraction(draw);
-                draw.on('drawend', function (event) {
-                    handleDrawEnd(event, drawType);
-                });
+                output.html(`
+                    <h3 class="text-xl text-[#1C274C] font-bold mb-1">Drawn Geometry (${drawType} in ${selectedProjection})</h3>
+                    <div class="relative group mt-2">
+                        <button onclick="copyToClipboard(this)" class="absolute right-2 top-2 group-hover:block text-sm bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded border">
+                            Copy
+                        </button>
+                        <pre class="bg-gray-100 p-4 rounded overflow-auto">${content}</pre>
+                    </div>
+                `);
             }
 
             function transformCoordinates(coords, geometryType, targetProjection) {
@@ -313,7 +355,7 @@
                     return ol.proj.transform(coords, "EPSG:3857", targetProjection);
                 } else if (geometryType === "LineString") {
                     return coords.map(coord => ol.proj.transform(coord, "EPSG:3857", targetProjection));
-                } else if (geometryType === "Polygon") {
+                } else if (geometryType === "Polygon" || geometryType === "BBox") {
                     return coords.map(ring => {
                         return ring.map(coord => ol.proj.transform(coord, "EPSG:3857", targetProjection));
                     });
@@ -348,29 +390,67 @@
                 })
             });
             map.addLayer(vectorLayer);
-            const wktFormat = new ol.format.WKT();
+
             $('#show-viewer-map').click(function () {
+                const geometry = $('#input-geometry').val();
+                const geometryType = $('#viewer-type-selector').val();
+                const dataProjection = $('#viewer-projection-selector').val();
+
                 inputError.hide();
-                let wkt = $('#input-wkt').val();
                 try {
-                    const feature = wktFormat.readFeature(wkt, {
-                        dataProjection: $('#viewer-projection-selector').val(),
-                        featureProjection: map.getView().getProjection()
-                    });
-
-                    viewerSource.clear();
-                    viewerSource.addFeature(feature);
-
-                    map.getView().fit(feature.getGeometry(), {
-                        padding: [50, 50, 50, 50]
-                    });
+                    switch (geometryType) {
+                        case 'wkt':
+                            showWKT(geometry, dataProjection);
+                            break;
+                        case 'array':
+                            showArray(geometry, dataProjection);
+                            break;
+                    }
                 } catch (e) {
                     inputError.show();
+                    console.error(e);
                     inputError.html(`
-                        <span class="font-semibold"> Error: </span> Please enter valid WKT!
+                        <span class="font-semibold"> Error: </span> Please enter valid geometry!
                     `);
                 }
             });
+
+            const wktFormat = new ol.format.WKT();
+            function showWKT(geometry, dataProjection) {
+                const feature = wktFormat.readFeature(geometry, {
+                    dataProjection: dataProjection,
+                    featureProjection: map.getView().getProjection()
+                });
+                viewerSource.clear();
+                viewerSource.addFeature(feature);
+                map.getView().fit(feature.getGeometry(), {
+                    padding: [50, 50, 50, 50]
+                });
+            }
+
+            function showArray(geometryString, dataProjection) {
+                let coordinates = JSON.parse(geometryString);
+                if (!Array.isArray(coordinates)) throw new Error('Not an array!');
+                let geometry;
+                if (typeof coordinates[0] === 'number') { // Point
+                    geometry = new ol.geom.Point(coordinates);
+                }
+                else if (typeof coordinates[0][0] === 'number') { // LineString
+                    geometry = new ol.geom.LineString(coordinates);
+                }
+                else if (typeof coordinates[0][0][0] === 'number') { // Polygon
+                    geometry = new ol.geom.Polygon(coordinates);
+                } else {
+                    throw new Error('Unsupported geometry format');
+                }
+                geometry.transform(dataProjection, map.getView().getProjection());
+                const feature = new ol.Feature(geometry);
+                viewerSource.clear();
+                viewerSource.addFeature(feature);
+                map.getView().fit(geometry, {
+                    padding: [50, 50, 50, 50]
+                });
+            }
         }
 
         $('#convert-button').click(function () {
