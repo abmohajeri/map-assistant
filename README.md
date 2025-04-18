@@ -8,7 +8,7 @@
 
 ## Features
 
-- **Geometry Extractor**: Draw and extract geometric data (Points, LineStrings, Polygons).
+- **Geometry Extractor**: Draw and extract geometric data (Points, LineStrings, Polygons, and BBox).
 - **Geometry Viewer**: Visualize geometries on a map.
 - **Coordinate Converter**: Convert coordinates between different projections (EPSG:3857, EPSG:4326).
 
